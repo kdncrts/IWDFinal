@@ -3,6 +3,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 const assert = require('assert');
 const ModelUtils = new (require('../utils/ModelUtils'))();
+const bcrypt = require('bcrypt');
 
 // Mongo variables
 const url = 'mongodb+srv://admin_MTM282:admin_MTM282@cluster0-mug8p.mongodb.net/test?retryWrites=true&w=majority';
@@ -82,5 +83,23 @@ router.route("/buy").get(
     })());
     }
 );
+
+router.route("/register").get(
+    function(req, res) {
+        const model = {
+            header: ModelUtils.buildHeader("register", null)
+        }
+        res.render("register", model);
+    }
+)
+
+router.route("/login").get(
+    function(req, res) {
+        const model = {
+            header: ModelUtils.buildHeader("login", null)
+        }
+        res.render("login", model);
+    }
+)
 
 module.exports = router;

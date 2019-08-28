@@ -1,0 +1,45 @@
+extends layout
+
+block content
+    - var q1Values = ["Pepperoni", "Mushroom", "Anchovies", "Sausage", "Artichokes", "Pineapple"];
+    - var q2Values = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"];
+    form(action="register")
+        p   
+            | Username
+            br
+            input(type="text" id="username")
+        p
+            | Password
+            br
+            input(type="password" id="password")
+        p
+            | Confirm Password
+            br
+            input(type="password" id="password-confirm")
+        p
+            | Email
+            br
+            input(type="text" id="email")
+        p
+            | Age
+            br
+            input(type="number" id="age")
+        p
+            | Favorite Pizza Topping
+            each topping in q1Values
+                br
+                input(type="radio" id=topping name="q1" value=topping)
+                label(for=topping)
+                    = topping 
+        p
+            | Favorite Color
+            each color in q2Values
+                br
+                input(type="radio" id=color name="q2" value=color)
+                label(for=color)
+                    = color 
+        p
+            | Random Number from 0-100
+            br
+            input(type="number" id="q3" value=0)
+        input(type="submit")

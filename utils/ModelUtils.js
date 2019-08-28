@@ -1,7 +1,9 @@
 
 const pages = [
     {name: "Home",          route: "/",             reqPerm:"none"},
-    {name: "Card Store",    route: "/cards",        reqPerm:"none"}
+    {name: "Card Store",    route: "/cards",        reqPerm:"none"},
+    {name: "Login",         route: "/login",        reqPerm:"none"},
+    {name: "Register",      route: "/register",     reqPerm:"none"}
 ];
 module.exports = class ModelUtils {
     
