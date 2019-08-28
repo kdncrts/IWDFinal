@@ -1,0 +1,18 @@
+html
+    head
+        title="Trading Cards"
+        link(href="/styles/styles.css",type="text/css",rel="stylesheet")
+        script(src="/scripts/toggle.js")
+    body
+        nav(class="navbar")
+            div(class="navLogo")
+                img(class="siteLogo" src="/images/trading.png")
+                div="Trading Cards"
+            div(class="navContainer")
+                each link in header.nav
+                    if link.selected
+                        span(class="navItem " + link.selected  href=link.route disabled)=link.name
+                    else
+                        a(class="navItem " + link.selected  href=link.route disabled)=link.name
+        div(class="bodyContainer")
+            block content
