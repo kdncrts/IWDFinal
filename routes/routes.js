@@ -21,6 +21,33 @@ router.route("/register").get(
     }
 )
 
+router.route("/register").post(
+    function(req, res) {
+        const model = {
+            header: ModelUtils.buildHeader("/register", null)
+        }
+        console.log(req.body)
+        // validate form data ? 
+
+
+        // check for existing email/user
+        ModelUtils.read("users", {email: req.body.email}, user => {
+            if(user){
+                model["error"] = "User already associcated with that email"
+                res.render("register", model);
+                return;
+            } else {
+                // if existing user doesn't exist, then add the new users
+                ModelUtils.create("users", req.body, response => {
+
+                    // save user to session
+                    
+                });
+            }
+        });
+    }
+)
+
 router.route("/login").get(
     function(req, res) {
         const model = {

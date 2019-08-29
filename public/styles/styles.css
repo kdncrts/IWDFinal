@@ -11,6 +11,10 @@ body {
     border-bottom: 1px solid #d8ded8;
 }
 
+.text-red {
+    color: red;
+}
+
 .navLogo {
     font-size: 20px;
     display: flex;

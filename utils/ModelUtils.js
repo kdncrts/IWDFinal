@@ -57,7 +57,7 @@ module.exports = class ModelUtils {
         })();
     }
 
-    save (collection, object, callback) {
+    create (collection, object, callback) {
         try {
             MongoClient.connect(url, mongoOptions, function (err, client) {
                 assert.equal(null, err);
