@@ -1,13 +1,20 @@
+const express = require('express');
+const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectID;
+const assert = require('assert');
+
+// Mongo variables
+const url = 'mongodb+srv://admin_MTM282:admin_MTM282@cluster0-mug8p.mongodb.net/test?retryWrites=true&w=majority';
+const dbName = 'pug';
+var mongoOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const pages = [
     {name: "Home",          route: "/",             reqPerm:"none"},
-    {name: "Card Store",    route: "/cards",        reqPerm:"none"},
     {name: "Login",         route: "/login",        reqPerm:"none"},
     {name: "Register",      route: "/register",     reqPerm:"none"}
 ];
-module.exports = class ModelUtils {
-    
 
+module.exports = class ModelUtils {
     buildHeader(route, user) {
         const nav = [];
         pages.forEach(page => {
@@ -27,5 +34,87 @@ module.exports = class ModelUtils {
 
     canLoadPage (page, user) {
         return true;
+    }
+
+
+    read (collection, filter, callback) {
+        return (async function(){
+            try{
+                var client = await MongoClient.connect(url, mongoOptions);
+                var db = client.db(dbName);
+        
+                db.collection(collection)
+                    .find(filter)
+                    .toArray(function (err, data) {
+                        if(err)console.log(err);
+                        callback(data);
+                    });
+            }catch(err){
+                console.log(err);
+            }finally{
+                client.close();
+            }
+        })();
+    }
+
+    save (collection, object, callback) {
+        try {
+            MongoClient.connect(url, mongoOptions, function (err, client) {
+                assert.equal(null, err);
+                const db = client.db(dbName);
+        
+                var myPromise = () => {
+                    return new Promise((resolve, reject) => {
+                        db.collection(collection).insert(object);
+                        resolve();
+                    });
+                };
+        
+                var callMyPromise = async () => {
+                    var result = await (myPromise());
+                    return result;
+                };
+        
+                callMyPromise().then(function (result) {
+                    client.close();
+                    callback(result);
+                    
+                    console.log("Finished Loading Book Data!");
+                    res.redirect("/books");
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    delete (collection, id, callback) {
+        try {
+            MongoClient.connect(url, mongoOptions, function (err, client) {
+                assert.equal(null, err);
+                const db = client.db(dbName);
+        
+                var myPromise = () => {
+                    return new Promise((resolve, reject) => {
+                        db.collection(collection)
+                            .deleteOne({_id: id});
+                        resolve();
+                    });
+                };
+        
+                var callMyPromise = async () => {
+                    var result = await (myPromise());
+                    //anything here is executed after result is resolved
+                    return result;
+                };
+        
+                callMyPromise().then(function (result) {
+                    client.close();
+                    callback(result);
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
