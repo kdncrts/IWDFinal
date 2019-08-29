@@ -109,15 +109,15 @@ router.route("/login").get(
 
 router.route("/logout").get(
     function(req, res) {
-        var user = {
+        var logOutUser = {
             username: "",
             email: "",
             role: ""
         }
+        req.session.user = logOutUser;
         const model = {
             header: ModelUtils.buildHeader("/", req.session.user)
         }
-        req.session.user = user;
         res.render("index", model);
     }
 )
