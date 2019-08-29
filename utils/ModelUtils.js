@@ -14,6 +14,7 @@ const pages = [
     {name: "Register",      route: "/register",     reqPerm:"none"}
 ];
 
+
 module.exports = class ModelUtils {
     buildHeader(route, user) {
         const nav = [];
