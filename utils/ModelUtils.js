@@ -18,10 +18,12 @@ const pages = [
 
 
 module.exports = class ModelUtils {
-    buildHeader(route, user, role) {
+    buildHeader(route, user) {
         const nav = [];
+        console.log("header");
+        console.log(user);
         pages.forEach(page => {
-            if(this.canLoadPage(page, role)){
+            if(this.canLoadPage(page, user)){
                 nav.push({
                     name: page.name,
                     route: page.route,
@@ -37,18 +39,25 @@ module.exports = class ModelUtils {
 
     canLoadPage (page, user) {
         var canLoad = false;
-        console.log(page);
-        console.log(user);
+        console.log("can load page");
+        console.log("page: " + page.route);
+        console.log("user: " + user);
+        var role = "";
+        if(user != undefined) {
+            role = user.role;
+        }
         if(page.route == "/") {
             canLoad = true;
         }
-        else if((page.route == "/login" || page.route == "/register") && !user) {
+        else if((page.route == "/login" || page.route == "/register")) {
+            if(role == "") {
+                canLoad = true;
+            }
+        }
+        else if(page.route == "/logout" && role != "") {
             canLoad = true;
         }
-        else if(page.route == "/logout" && user) {
-            canLoad = true;
-        }
-        else if(page == "/admin/users" && user && user.role == "admin") {
+        else if(page == "/admin/users" && user && role == "admin") {
             canLoad = true;
         }
         return canLoad;

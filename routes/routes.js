@@ -27,7 +27,6 @@ router.route("/register").post(
         const model = {
             header: ModelUtils.buildHeader("/register", req.session.user)
         }
-        console.log(req.body)
         // validate form data ? 
         filter = {
             email: req.body.email
@@ -132,14 +131,15 @@ router.route("/login").post(
         ModelUtils.read("users", {email: email}, data => {
             if(data[0]) {
                 if(bcrypt.compareSync(password, data[0].password)) {
-                    console.log("password worked!");
                     var user = {
                         username: data[0].username,
                         email: data[0].email,
                         role: data[0].role
                     }
                     req.session.user = user;
-                    model["header"] = ModelUtils.buildHeader("/", req.session.role);
+                    console.log("login session user: " + req.session.user);
+                    console.log("session: " + req.session);
+                    model["header"] = ModelUtils.buildHeader("/", req.session.user);
                     res.render("index", model);
                 } else {
                     model["error"] = "Password was not correct";
