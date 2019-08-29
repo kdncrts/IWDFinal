@@ -109,13 +109,13 @@ router.route("/login").get(
 
 router.route("/logout").get(
     function(req, res) {
-        const model = {
-            header: ModelUtils.buildHeader("/", req.session.user)
-        }
         var user = {
             username: "",
             email: "",
             role: ""
+        }
+        const model = {
+            header: ModelUtils.buildHeader("/", req.session.user)
         }
         req.session.user = user;
         res.render("index", model);
@@ -124,21 +124,22 @@ router.route("/logout").get(
 
 router.route("/login").post(
     function(req, res) {
+        console.log("trying to log in");
         const model = {
             header: ModelUtils.buildHeader("/login", req.session.user)
         }
         const {email, password} = req.body;
-        ModelUtils.read("users", {email: email}, data => {
+        ModelUtils.read("users", {email: email, status: "active"}, data => {
             if(data && data.length) {
                 const user = data[0];
                 if(bcrypt.compareSync(password, user.password)) {
-                    var user = {
+                    var loginUser = {
                         username: data[0].username,
                         email: data[0].email,
                         role: data[0].role
                     }
-                    console.log("password worked!");
-                    req.session.user = user;
+                    console.log("password worked! " + loginUser.toString());
+                    req.session.user = loginUser;
                     console.log("login session user: " + req.session.user);
                     console.log("session: " + req.session);
                     model["header"] = ModelUtils.buildHeader("/", req.session.user);

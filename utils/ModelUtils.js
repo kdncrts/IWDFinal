@@ -39,12 +39,12 @@ module.exports = class ModelUtils {
 
     canLoadPage (page, user) {
         var canLoad = false;
-        console.log("can load page");
-        console.log("page: " + page.route);
-        console.log("user: " + user);
         var role = "";
+        console.log(page.route)
         if(user != undefined) {
             role = user.role;
+            console.log(user);
+            console.log("role: " + role);
         }
         if(page.route == "/") {
             canLoad = true;
@@ -57,7 +57,7 @@ module.exports = class ModelUtils {
         else if(page.route == "/logout" && role != "") {
             canLoad = true;
         }
-        else if(page == "/admin/users" && user && role == "admin") {
+        else if(page.route == "/admin/users" && user && role == "admin") {
             canLoad = true;
         }
         return canLoad;

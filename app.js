@@ -11,22 +11,10 @@ app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(session({
- 
-    // using FileStore with express-session
-    // as the sore method, replacing the default memory store
-    store: new FileStore({
-
-        path: './session-store'
-
-    }),
-    name: 'Trading Cards', // cookie will show up as foo site
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        // five year cookie
-        maxAge: 1000 * 60 * 10
-    }}));
+    secret:"secret",
+    resave: true,
+    saveUninitialized: true
+}));
 
 
 var adminRoutes = require('./routes/adminRoutes');
