@@ -132,6 +132,7 @@ router.route("/login").post(
         ModelUtils.read("users", {email: email}, data => {
             if(data[0]) {
                 if(bcrypt.compareSync(password, data[0].password)) {
+                    console.log("password worked!");
                     var user = {
                         username: data[0].username,
                         email: data[0].email,
