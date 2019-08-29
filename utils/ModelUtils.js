@@ -13,7 +13,8 @@ const pages = [
     {name: "Login",         route: "/login",        reqPerm: {noUser: true}},
     {name: "Register",      route: "/register",     reqPerm: {noUser: true}},
     {name: "Admin",         route: "/admin/users",  reqPerm: {isUser: true, perm: "admin"}},
-    {name: "Logout",        route: "/logout",       reqPerm: {isUser: true}}
+    {name: "Logout",        route: "/logout",       reqPerm: {isUser: true}},
+    {name: "Profile",       route: "/profile",      reqPerm: {isUser: true}}
 ];
 
 
@@ -82,9 +83,6 @@ module.exports = class ModelUtils {
                 callMyPromise().then(function (result) {
                     client.close();
                     callback(result);
-                    
-                    console.log("Finished Loading Book Data!");
-                    res.redirect("/books");
                 });
             });
         } catch (e) {
@@ -100,9 +98,6 @@ module.exports = class ModelUtils {
         
                 var myPromise = () => {
                     var update = {};
-                    // object.map((key, value) => {
-                    //     update[key] = {$replacewith: value};
-                    // });
 
                     Object.keys(object).forEach(key => {
                         update[key] = {$replaceWith: object[key]};

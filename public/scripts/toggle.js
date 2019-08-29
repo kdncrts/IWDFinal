@@ -42,3 +42,9 @@ const createCard = (card) => {
     "</div>"
     )
 }
+
+var edit = false;
+
+function reverseEdit() {
+    edit = !edit;
+}

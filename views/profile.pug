@@ -1,0 +1,44 @@
+extends layout
+
+block content
+    - var toppings = ["Pepperoni", "Mushroom", "Anchovies", "Sausage", "Artichokes", "Pineapple"];
+    - var colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"];
+    - var edit = false;
+    h2(class="center")="Account Edit Page"
+    hr
+    h4(class="center")="Press Submit to update your account"
+    if error
+        p(class="text-red")=error
+    if user
+        form(action="update" method="post")
+            div(class="form-row")
+                div(class="form-group col-md-6")
+                    label(for="username")="Username"
+                    input(id="username" type="text" name="username" class="form-control" value=user.username)
+                div(class="form-group col-md-6")
+                    label(for="password")="Password"
+                    input(id="password" type="password" name="password" class="form-control")
+            div(class="form-row")
+                div(class="form-group col-md-6")
+                    label(for="email")="Email"
+                    input(id="email" type="text" name="email" class="form-control" value=user.email)
+                div(class="form-group col-md-6")
+                    label(for="confirmPassword")="Confirm Password"
+                    input(id="confirmPassword" type="password" name="confirmPassword" class="form-control")
+            div(class="form-group")
+                label(for="age")="Age"
+                input(id="age" type="numer" name="age" class="form-control" value=user.age)
+            div(class="form-group")
+                label(for="toppingsForm")="Favorite Pizza Topping"
+                select(class="form-control" id="toppingsForm" name="toppings" value=user.toppings)
+                    each topping in toppings
+                        option=topping
+            div(class="form-group")
+                label(for="toppingsForm")="Favorite Color"
+                select(class="form-control" id="toppingsForm" name="colors" value=user.colors)
+                    each color in colors
+                        option=color
+            div(class="form-group")
+                label(for="random")="Random Number from 0-100"
+                input(id="random" type="range" name="random" class="custom-range" min="0" max="100" value=user.Number)
+            input(class="btn btn-secondary" type="submit")
