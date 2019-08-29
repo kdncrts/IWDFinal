@@ -15,7 +15,7 @@ router.route("/").get(
 router.route("/register").get(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("register", null)
+            header: ModelUtils.buildHeader("/register", null)
         }
         res.render("register", model);
     }
@@ -24,7 +24,7 @@ router.route("/register").get(
 router.route("/login").get(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("login", null)
+            header: ModelUtils.buildHeader("/login", null)
         }
         res.render("login", model);
     }
