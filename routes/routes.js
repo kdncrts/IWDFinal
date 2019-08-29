@@ -28,7 +28,6 @@ router.route("/register").post(
         const model = {
             header: ModelUtils.buildHeader(req)
         }
-        console.log(req.body)
         // validate form data ? 
         filter = {
             email: req.body.email
@@ -134,6 +133,11 @@ router.route("/login").post(
             if(data && data.length) {
                 const user = data[0];
                 if(bcrypt.compareSync(password, user.password)) {
+                    var user = {
+                        username: data[0].username,
+                        email: data[0].email,
+                        role: data[0].role
+                    }
                     console.log("password worked!");
                     req.session.user = user;
                     model["header"] = ModelUtils.buildHeader(req)

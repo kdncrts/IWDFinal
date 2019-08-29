@@ -19,7 +19,6 @@ const pages = [
 
 module.exports = class ModelUtils {
     buildHeader(req) {
-        console.log(req)
         const user = req.session.user;
         const nav = [];
         pages.forEach(page => {
