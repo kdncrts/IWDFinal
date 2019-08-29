@@ -11,7 +11,8 @@ var mongoOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const pages = [
     {name: "Home",          route: "/",             reqPerm:"none"},
     {name: "Login",         route: "/login",        reqPerm:"none"},
-    {name: "Register",      route: "/register",     reqPerm:"none"}
+    {name: "Register",      route: "/register",     reqPerm:"none"},
+    {name: "Admin",         route: "/admin/users",  reqPerm:"none"}
 ];
 
 
@@ -69,6 +70,42 @@ module.exports = class ModelUtils {
                 var myPromise = () => {
                     return new Promise((resolve, reject) => {
                         db.collection(collection).insert(object);
+                        resolve();
+                    });
+                };
+        
+                var callMyPromise = async () => {
+                    var result = await (myPromise());
+                    return result;
+                };
+        
+                callMyPromise().then(function (result) {
+                    client.close();
+                    callback(result);
+                    
+                    console.log("Finished Loading Book Data!");
+                    res.redirect("/books");
+                });
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    update (collection, filter, object, callback) {
+        try {
+            MongoClient.connect(url, mongoOptions, function (err, client) {
+                assert.equal(null, err);
+                const db = client.db(dbName);
+        
+                var myPromise = () => {
+                    var update = {};
+                    object.map((key, value) => {
+                        update[key] = {$replacewith: value};
+                    });
+
+                    return new Promise((resolve, reject) => {
+                        db.collection(collection).updateOne(filter, update);
                         resolve();
                     });
                 };
