@@ -5,11 +5,43 @@ const bcrypt = require('bcrypt');
 
 // These routes use the Promise Example I posted
 router.route("/").get(
-    function(req, res){
-        var model = {
-            header: ModelUtils.buildHeader(req),
-        }
-        res.render("index", model);
+    function(req, res) {
+        ModelUtils.read("users", {}, userList => {
+            const toppings = {
+                "Pepperoni": 0, 
+                "Mushroom": 0, 
+                "Anchovies": 0, 
+                "Sausage": 0, 
+                "Artichokes": 0, 
+                "Pineapple": 0
+            }
+            const colors = {
+                "Red": 0, 
+                "Orange": 0, 
+                "Yellow": 0, 
+                "Green": 0, 
+                "Blue": 0,
+                "Purple": 0,
+                "Pink": 0,
+                "Black": 0,
+                "White": 0
+            }
+            const random = {};
+            if(userList) {
+                userList.forEach(user => {
+                    toppings[user.toppings]++;
+                    colors[user.colors]++;
+                    random[user.number] = random[user.number] ? random[user.number] + 1 : 1;
+                })
+            }
+            const model = {
+                header: ModelUtils.buildHeader(req),
+                toppings,
+                colors,
+                random
+            }
+            res.render("index", model);
+        });
     }
 );
 

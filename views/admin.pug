@@ -5,8 +5,7 @@ block content
         each user in users
             p=user.email
             p=user.staus
-            - if(user.status == "active") {
+            if user.status == "active"
                 a(href="/admin/user/suspend/" + user.email)="Suspend"
-            -} else {
+            else
                 a(href="/admin/user/activate/" + user.email)="Activate"
-            -}

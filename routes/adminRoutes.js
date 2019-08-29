@@ -15,12 +15,11 @@ router.route("/users").get(
                 model["users"] = data;
                 res.render("admin", model);
             });
-        }
-        else {
+        } else {
             const model = {
                 header: ModelUtils.buildHeader(req)
             };
-            res.render("index", model)
+            res.redirect("/")
         }
     }
 );
@@ -37,7 +36,7 @@ router.route("/user/activate/:email").get(
                     ModelUtils.update("users", {email: req.params.email}, data[0], callback =>{
                         ModelUtils.read("users", {}, data => {
                             model["users"] = data;
-                            res.render("admin", model);
+                            res.redirect("/admin/users", model);
                         });
                     });
                 } 
@@ -46,6 +45,8 @@ router.route("/user/activate/:email").get(
                     res.render("admin", model);
                 }
             });
+        } else {
+            res.redirect("/logout");
         }
     }
 );
@@ -62,15 +63,16 @@ router.route("/user/suspend/:email").get(
                     ModelUtils.update("users", {email: req.params.email}, data[0], callback =>{
                         ModelUtils.read("users", {}, data => {
                             model["users"] = data;
-                            res.render("admin", model);
+                            res.redirect("/admin/users");
                         });
                     });
                 } 
                 else {
-                    model["error"] = "Something went wrong couldn't find specified user";
-                    res.render("admin", model);
+                    res.redirect("/admin/users");
                 }
             });
+        } else {
+            res.redirect("/logout");
         }
     }
 );
