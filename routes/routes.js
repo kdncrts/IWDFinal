@@ -108,7 +108,7 @@ router.route("/update").post(
                         age: req.body.age ? req.body.age : data[0].age,
                         toppings: req.body.toppings ? req.body.toppings : data[0].toppings,
                         colors: req.body.toppings ? req.body.colors : data[0].colors,
-                        number: req.body.number ? req.body.number : data[0].number
+                        number: req.body.random ? req.body.random : data[0].number
                     }
                     ModelUtils.update("users", {email: req.body.email}, updateUser, () => {
                         req.session.user.email = updateUser.email;
