@@ -22,9 +22,6 @@ block content
                 div(class="form-group col-md-6")
                     label(for="email")="Email"
                     input(id="email" type="text" name="email" class="form-control" value=user.email)
-                div(class="form-group col-md-6")
-                    label(for="confirmPassword")="Confirm Password"
-                    input(id="confirmPassword" type="password" name="confirmPassword" class="form-control")
             div(class="form-group")
                 label(for="age")="Age"
                 input(id="age" type="numer" name="age" class="form-control" value=user.age)
@@ -32,13 +29,19 @@ block content
                 label(for="toppingsForm")="Favorite Pizza Topping"
                 select(class="form-control" id="toppingsForm" name="toppings" value=user.toppings)
                     each topping in toppings
-                        option=topping
+                        if topping == user.toppings
+                            option(selected)=topping
+                        else
+                            option=topping
             div(class="form-group")
-                label(for="toppingsForm")="Favorite Color"
-                select(class="form-control" id="toppingsForm" name="colors" value=user.colors)
+                label(for="colorForm")="Favorite Color"
+                select(class="form-control" id="colorForm" name="colors")
                     each color in colors
-                        option=color
+                        if color == user.colors
+                            option(selected)=color
+                        else
+                            option=color
             div(class="form-group")
                 label(for="random")="Random Number from 0-100"
-                input(id="random" type="range" name="random" class="custom-range" min="0" max="100" value=user.Number)
+                input(id="random" type="range" name="random" class="custom-range" min="0" max="100" value=user.number)
             input(class="btn btn-secondary" type="submit")

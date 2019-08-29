@@ -37,54 +37,67 @@ router.route("/profile").get(
                     res.redirect('/logout');
                 }
             });
+        } else {
+            res.redirect('/logout');
         }
     }
 )
+
+router.route("/update").get(
+    function(req, res) {
+        res.redirect("/profile");
+    }
+);
 
 router.route("/update").post(
     function(req, res) {
         const model = {
             header: ModelUtils.buildHeader(req)
         }
-        ModelUtils.read("users", {email: req.session.user.email}, data => {
-            if(data) {
-                //data[0] = 
-                // ModelUtils.update("users", {email: req.params.email}, data[0], callback =>{
-                //     ModelUtils.read("users", {}, data => {
-                //         model["users"] = data;
-                //         res.render("admin", model);
-                //     });
-                // });
-                var newPassword = "";
-                if(req.body.password && req.body.confirmPassword && req.body.password == req.body.confirmPassword) {
-                    newPassword = bcrypt.hashSync(req.body.password, 10);
-                }
+        if (!req.session.user){
+            res.redirect('/logout');
+            return;
+        } else {
+            ModelUtils.read("users", {email: req.session.user.email}, data => {
+                if(data) {
+                    //data[0] = 
+                    // ModelUtils.update("users", {email: req.params.email}, data[0], callback =>{
+                    //     ModelUtils.read("users", {}, data => {
+                    //         model["users"] = data;
+                    //         res.render("admin", model);
+                    //     });
+                    // });
+
+                    var newPassword = "";
+                    if(req.body.password) {
+                        newPassword = bcrypt.hashSync(req.body.password, 10);
+                    }
+                    else {
+                        newPassword = data[0].password;
+                    }
+                    var updateUser = {
+                        username: req.body.username ? req.body.username : data[0].username,
+                        password: newPassword,
+                        email: req.body.email ? req.body.email : data[0].email,
+                        role: data[0].role,
+                        status: "active",
+                        age: req.body.age ? req.body.age : data[0].age,
+                        toppings: req.body.toppings ? req.body.toppings : data[0].toppings,
+                        colors: req.body.toppings ? req.body.colors : data[0].colors,
+                        number: req.body.number ? req.body.number : data[0].number
+                    }
+                    ModelUtils.update("users", {email: req.body.email}, updateUser, callback => {
+                        req.session.user.email = updateUser.email;
+                        req.session.user.username = updateUser.username;
+                        res.redirect("/profile");
+                    })
+                } 
                 else {
-                    newPassword = data[0].password;
-                }
-                var updateUser = {
-                    username: req.body.username ? req.body.username : data[0].username,
-                    password: newPassword,
-                    email: req.body.email ? req.body.email : data[0].email,
-                    role: data[0].role,
-                    status: "active",
-                    age: req.body.age ? req.body.age : data[0].age,
-                    toppings: req.body.toppings ? req.body.toppings : data[0].toppings,
-                    colors: req.body.toppings ? req.body.colors : data[0].colors,
-                    number: req.body.number ? req.body.number : data[0].number
-                }
-                ModelUtils.update("users", {email: req.body.email}, updateUser, callback => {
-                    req.session.user.email = updateUser.email;
-                    req.session.user.username = updateUser.username;
-                    model["user"] = updateUser;
+                    model["error"] = "An error occured while updating your account";
                     res.render("profile", model);
-                })
-            } 
-            else {
-                model["error"] = "An error occured while updating your account";
-                res.render("profile", model);
-            }
-        });
+                }
+            });
+        }
     }
 )
 
@@ -204,8 +217,7 @@ router.route("/login").post(
                         role: data[0].role
                     }
                     req.session.user = loginUser;
-                    model["header"] = ModelUtils.buildHeader(req);
-                    res.render("index", model);
+                    res.redirect("/");
                 } else {
                     model["error"] = "Password was not correct";
                     res.render("login", model);
@@ -214,7 +226,7 @@ router.route("/login").post(
                 // if true log the user in and log session
                 // else tell them that that was the wrong password for that user
             } else {
-                model["error"] = "User could not be found with that email or";
+                model["error"] = "User could not be found with that email.";
                 res.render("login", model);
             }
         })
