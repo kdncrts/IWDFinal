@@ -9,7 +9,7 @@ router.route("/users").get(
     function(req, res){
         if(req.session.role == "admin") {
             const model = {
-                header: ModelUtils.buildHeader("/admin/users", req.session.user),
+                header: ModelUtils.buildHeader(req),
             };
         ModelUtils.read("users", {}, data => {
             model["users"] = data;
@@ -18,7 +18,7 @@ router.route("/users").get(
         }
         else {
             const model = {
-                header: ModelUtils.buildHeader("/", req.session.user)
+                header: ModelUtils.buildHeader(req)
             };
             res.render("/", model)
         }

@@ -6,8 +6,9 @@ const bcrypt = require('bcrypt');
 // These routes use the Promise Example I posted
 router.route("/").get(
     function(req, res){
+        req.session["user"] = {name: "adam"}
         var model = {
-            header: ModelUtils.buildHeader("/", req.session.role /* would be a user here */),
+            header: ModelUtils.buildHeader(req),
         }
         res.render("index", model);
     }
@@ -16,7 +17,7 @@ router.route("/").get(
 router.route("/register").get(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/register", req.session.role)
+            header: ModelUtils.buildHeader(req)
         }
         res.render("register", model);
     }
@@ -25,7 +26,7 @@ router.route("/register").get(
 router.route("/register").post(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/register", req.session.user)
+            header: ModelUtils.buildHeader(req)
         }
         console.log(req.body)
         // validate form data ? 
@@ -89,7 +90,7 @@ router.route("/register").post(
                             role: newUser.role
                         }
                         req.session.user = user;
-                        model["header"] = ModelUtils.buildHeader("/", user);
+                        model["header"] = ModelUtils.buildHeader(req);
                         res.render("index", model);
                         return;
                     });
@@ -102,7 +103,7 @@ router.route("/register").post(
 router.route("/login").get(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/login", req.session.user)
+            header: ModelUtils.buildHeader(req)
         }
         res.render("login", model);
     }
@@ -111,7 +112,7 @@ router.route("/login").get(
 router.route("/logout").get(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/", req.session.user)
+            header: ModelUtils.buildHeader(req)
         }
         var user = {
             username: "",
@@ -126,7 +127,7 @@ router.route("/logout").get(
 router.route("/login").post(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/login", req.session.user)
+            header: ModelUtils.buildHeader(req)
         }
         const {email, password} = req.body;
         ModelUtils.read("users", {email: email}, data => {
@@ -135,7 +136,7 @@ router.route("/login").post(
                 if(bcrypt.compareSync(password, user.password)) {
                     console.log("password worked!");
                     req.session.user = user;
-                    model["header"] = ModelUtils.buildHeader("/", req.session.role);
+                    model["header"] = ModelUtils.buildHeader(req)
                     res.render("index", model);
                 } else {
                     model["error"] = "Password was not correct";

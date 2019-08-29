@@ -9,7 +9,7 @@ app.set('view engine', 'pug');
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-app.use(session({secret: "hello i am a secret"}));
+app.use(session({secret: "c4cRhGDS3xfvxR7C3cp8uEasGXYQSBYx5dRPYML"}));
 
 
 var adminRoutes = require('./routes/adminRoutes');

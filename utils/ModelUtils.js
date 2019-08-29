@@ -9,23 +9,31 @@ const dbName = 'pug';
 var mongoOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 
 const pages = [
-    {name: "Home",          route: "/",             reqPerm:"none"},
-    {name: "Login",         route: "/login",        reqPerm:"none"},
-    {name: "Register",      route: "/register",     reqPerm:"none"},
-    {name: "Admin",         route: "/admin/users",  reqPerm:"none"},
-    {name: "Logout",        route: "/logout",       reqPerm:"none"}
+    {name: "Home",          route: "/",             reqPerm: {}},
+    {name: "Login",         route: "/login",        reqPerm: {noUser: true}},
+    {name: "Register",      route: "/register",     reqPerm: {noUser: true}},
+    {name: "Admin",         route: "/admin/users",  reqPerm: {isUser: true, perm: "admin"}},
+    {name: "Logout",        route: "/logout",       reqPerm: {isUser: true}}
 ];
 
 
 module.exports = class ModelUtils {
-    buildHeader(route, user, role) {
+    buildHeader(req) {
+        console.log(req)
+        const user = req.session.user;
         const nav = [];
         pages.forEach(page => {
-            if(this.canLoadPage(page, role)){
+            const {isUser, noUser, perm} = page.reqPerm;
+            
+            if((isUser && !user) // if a user is required, but there is no user
+            || (noUser && user)  // if no user is required, but there is a user
+            || (perm && (!user || user.role != perm))){ // if a perm is required, but there is no user or the user doesn't have the required perm
+                // they don't get the page.
+            } else {
                 nav.push({
                     name: page.name,
                     route: page.route,
-                    selected: page.route === route ? "selected" : ""
+                    selected: page.route === req.url ? "selected" : ""
                 })
             }
         })
@@ -34,26 +42,6 @@ module.exports = class ModelUtils {
             user
         };
     }
-
-    canLoadPage (page, user) {
-        var canLoad = false;
-        console.log(page);
-        console.log(user);
-        if(page.route == "/") {
-            canLoad = true;
-        }
-        else if((page.route == "/login" || page.route == "/register") && !user) {
-            canLoad = true;
-        }
-        else if(page.route == "/logout" && user) {
-            canLoad = true;
-        }
-        else if(page == "/admin/users" && user && user.role == "admin") {
-            canLoad = true;
-        }
-        return canLoad;
-    }
-
 
     read (collection, filter, callback) {
         return (async function(){
