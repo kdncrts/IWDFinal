@@ -6,7 +6,6 @@ const bcrypt = require('bcrypt');
 // These routes use the Promise Example I posted
 router.route("/").get(
     function(req, res){
-        req.session["user"] = {name: "adam"}
         var model = {
             header: ModelUtils.buildHeader(req),
         }
