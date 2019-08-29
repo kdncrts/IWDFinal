@@ -3,48 +3,39 @@ extends layout
 block content
     - var toppings = ["Pepperoni", "Mushroom", "Anchovies", "Sausage", "Artichokes", "Pineapple"];
     - var colors = ["Red", "Orange", "Yellow", "Green", "Blue", "Purple", "Pink", "Black", "White"];
+    h2(class="center")="Register Page"
+    hr
     if error
         p(class="text-red")=error
-
-    form(action="/register" method="post")
-        p   
-            | Username
-            br
-            input(type="text" name="username")
-        p
-            | Password
-            br
-            input(type="password" name="password")
-        p
-            | Confirm Password
-            br
-            input(type="password" name="confirmPassword")
-        p
-            | Email
-            br
-            input(type="text" name="email")
-        p
-            | Age
-            br
-            input(type="number" name="age")
-        p
-            | Favorite Pizza Topping
-            input(checked type="radio" name="topping" value="none" style="visibility:hidden")
-            each topping in toppings
-                br
-                input(type="radio" name="topping" value=topping.toLowerCase())
-                label(for=topping)
-                    = topping 
-        p
-            | Favorite Color
-            input(checked type="radio" name="color" value="none" style="visibility:hidden")
-            each color in colors
-                br
-                input(type="radio" name="color" value=color.toLowerCase())
-                label(for=color)
-                    = color 
-        p
-            | Random Number from 0-100
-            br
-            input(type="number" name="random" value=-1)
-        input(type="submit")
+    form(action="register" method="post")
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label(for="username")="Username"
+                input(id="username" type="text" name="username" class="form-control")
+            div(class="form-group col-md-6")
+                label(for="password")="Password"
+                input(id="password" type="password" name="password" class="form-control")
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label(for="email")="Email"
+                input(id="email" type="text" name="email" class="form-control")
+            div(class="form-group col-md-6")
+                label(for="password-confirm")="Confirm Password"
+                input(id="password-confirm" type="password" name="password-confirm" class="form-control")
+        div(class="form-group")
+            label(for="age")="Age"
+            input(id="age" type="numer" name="age" class="form-control")
+        div(class="form-group")
+            label(for="toppingsForm")="Favorite Pizza Topping"
+            select(class="form-control" id="toppingsForm")
+                each topping in toppings
+                    option=topping
+        div(class="form-group")
+            label(for="toppingsForm")="Favorite Color"
+            select(class="form-control" id="toppingsForm" )
+                each color in colors
+                    option=color
+        div(class="form-group")
+            label(for="random")="Random Number from 0-100"
+            input(id="random" type="range" name="random" class="custom-range" min="0" max="100")
+        input(class="btn btn-secondary" type="submit")

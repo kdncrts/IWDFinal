@@ -130,60 +130,12 @@ h1 {
     animation-duration:0.4s;
 }
 
-.closed {
-    display: none;
-    max-height: 0px;
-}
-
-.cardImgContainer {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-}
-.cardImg {
-    max-width:100%;
-    
-}
-
-.cardButtons{
-    display: flex;
-    flex-direction: row;
-    padding: 5px;
-}
-
-.cardButton {
-    width: 100%;
-    background-color: #f6f6f6; 
-    color: black;
-    border: none;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin:4px;
-}
-
-.cardButton:hover {
-    background-color: #eee;
-    cursor: pointer;
-}
-
-.cardButton:focus {
-    outline: none;
-}
-
-.cardButton:active {
-    background-color: #e7e7e7;
-    box-shadow: 0px 0px 5px 1px #666;
-    transition: box-shadow 0.2s;
-    /* box-shadow: 0px 0px 5px 1px #666 inset;   */
-
-}
-
 .cardFormContainer {
     display: flex;
     flex-direction: row;
     
 }
+
 .cardForm {
     flex-grow: 1;
     margin: 20px;
@@ -198,9 +150,18 @@ h1 {
     padding: 2px;
 }
 
-.cardFormLabel {
+.formGroup {
+    display: flex;
+    flex-direction: row;
+}
+
+.formLabel {
     font-size: 20px;
-    width: 140px;
+    width: 260px;
+}
+
+.formRadio {
+
 }
 
 .cardFormInput {
@@ -271,4 +232,76 @@ h1 {
 .cardListSwapButton:hover {
     background: #b8b8b8;
     border: 1px solid #a8a8a8;
+}
+
+
+
+
+
+
+
+
+/* Customize the label (the container) */
+.radioContainer {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radioContainer input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 100px;
+    background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.radioContainer:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radioContainer input:checked ~ .checkmark {
+    background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radioContainer input:checked ~ .checkmark:after {
+    display: block;
+}
+  
+  /* Style the indicator (dot/circle) */
+.radioContainer .checkmark:after {
+    top: 9px;
+    left: 9px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
 }
