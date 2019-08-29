@@ -11,10 +11,10 @@ var mongoOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const pages = [
     {name: "Home",          route: "/",             reqPerm: {}},
     {name: "Admin",         route: "/admin/users",  reqPerm: {isUser: true, perm: "admin"}},
-    {name: "Profile",       route: "/profile",      reqPerm: {isUser: true}}
+    {name: "Profile",       route: "/profile",      reqPerm: {isUser: true}},
     {name: "Login",         route: "/login",        reqPerm: {noUser: true}},
     {name: "Register",      route: "/register",     reqPerm: {noUser: true}},
-    {name: "Logout",        route: "/logout",       reqPerm: {isUser: true}},
+    {name: "Logout",        route: "/logout",       reqPerm: {isUser: true}}
 ];
 
 
