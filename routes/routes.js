@@ -92,14 +92,6 @@ router.route("/update").post(
         } else {
             ModelUtils.read("users", {email: req.session.user.email}, data => {
                 if(data) {
-                    //data[0] = 
-                    // ModelUtils.update("users", {email: req.params.email}, data[0], callback =>{
-                    //     ModelUtils.read("users", {}, data => {
-                    //         model["users"] = data;
-                    //         res.render("admin", model);
-                    //     });
-                    // });
-
                     var newPassword = "";
                     if(req.body.password) {
                         newPassword = bcrypt.hashSync(req.body.password, 10);
@@ -118,7 +110,7 @@ router.route("/update").post(
                         colors: req.body.toppings ? req.body.colors : data[0].colors,
                         number: req.body.number ? req.body.number : data[0].number
                     }
-                    ModelUtils.update("users", {email: req.body.email}, updateUser, callback => {
+                    ModelUtils.update("users", {email: req.body.email}, updateUser, () => {
                         req.session.user.email = updateUser.email;
                         req.session.user.username = updateUser.username;
                         res.redirect("/profile");
