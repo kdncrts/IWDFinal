@@ -42,21 +42,3 @@ const createCard = (card) => {
     "</div>"
     )
 }
-
-function login() {
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value
-
-    if(username != "" && password != "") {
-        // ajax call on /login
-        var json = {
-            username: username,
-            password: password
-        }
-        
-    }
-
-    document.getElementById('username').value = "";
-    document.getElementById('password').value = "";
-    return false;
-}
