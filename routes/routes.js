@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 router.route("/").get(
     function(req, res){
         var model = {
-            header: ModelUtils.buildHeader("/", req.session.role /* would be a user here */),
+            header: ModelUtils.buildHeader(req),
         }
         res.render("index", model);
     }
@@ -16,7 +16,7 @@ router.route("/").get(
 router.route("/register").get(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/register", req.session.role)
+            header: ModelUtils.buildHeader(req)
         }
         res.render("register", model);
     }
@@ -25,7 +25,7 @@ router.route("/register").get(
 router.route("/register").post(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/register", req.session.user)
+            header: ModelUtils.buildHeader(req)
         }
         // validate form data ? 
         filter = {
@@ -73,9 +73,9 @@ router.route("/register").post(
                         "role": "user",
                         "status": "active",
                         "age": req.body.age,
-                        "q1": req.body.topping,
-                        "q2": req.body.color,
-                        "q3": req.body.random
+                        "toppings": req.body.topping,
+                        "colors": req.body.color,
+                        "number": req.body.random
                     }
                     // if existing user doesn't exist, then add the new users
                     // format body and salt password
@@ -88,7 +88,7 @@ router.route("/register").post(
                             role: newUser.role
                         }
                         req.session.user = user;
-                        model["header"] = ModelUtils.buildHeader("/", user);
+                        model["header"] = ModelUtils.buildHeader(req);
                         res.render("index", model);
                         return;
                     });
@@ -101,7 +101,7 @@ router.route("/register").post(
 router.route("/login").get(
     function(req, res) {
         const model = {
-            header: ModelUtils.buildHeader("/login", req.session.user)
+            header: ModelUtils.buildHeader(req)
         }
         res.render("login", model);
     }
@@ -109,24 +109,15 @@ router.route("/login").get(
 
 router.route("/logout").get(
     function(req, res) {
-        var logOutUser = {
-            username: "",
-            email: "",
-            role: ""
-        }
-        req.session.user = logOutUser;
-        const model = {
-            header: ModelUtils.buildHeader("/", req.session.user)
-        }
-        res.render("index", model);
+        req.session.user = undefined;
+        res.redirect("/");
     }
 )
 
 router.route("/login").post(
     function(req, res) {
-        console.log("trying to log in");
         const model = {
-            header: ModelUtils.buildHeader("/login", req.session.user)
+            header: ModelUtils.buildHeader(req)
         }
         const {email, password} = req.body;
         ModelUtils.read("users", {email: email}, data => {
@@ -134,7 +125,7 @@ router.route("/login").post(
                 const user = data[0];
                 if(user.status == "suspended") {
                     model["error"] = "ACCOUNT WITH THAT EMAIL HAS BEEN SUSPENDED";
-                    res.render(login, model);
+                    res.render("login", model);
                 }
                 else if(bcrypt.compareSync(password, user.password)) {
                     var loginUser = {
@@ -142,11 +133,8 @@ router.route("/login").post(
                         email: data[0].email,
                         role: data[0].role
                     }
-                    console.log("password worked! " + loginUser.toString());
                     req.session.user = loginUser;
-                    console.log("login session user: " + req.session.user);
-                    console.log("session: " + req.session);
-                    model["header"] = ModelUtils.buildHeader("/", req.session.user);
+                    model["header"] = ModelUtils.buildHeader(req);
                     res.render("index", model);
                 } else {
                     model["error"] = "Password was not correct";
