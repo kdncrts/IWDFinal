@@ -129,10 +129,14 @@ router.route("/login").post(
             header: ModelUtils.buildHeader("/login", req.session.user)
         }
         const {email, password} = req.body;
-        ModelUtils.read("users", {email: email, status: "active"}, data => {
+        ModelUtils.read("users", {email: email}, data => {
             if(data && data.length) {
                 const user = data[0];
-                if(bcrypt.compareSync(password, user.password)) {
+                if(user.status == "suspended") {
+                    model["error"] = "ACCOUNT WITH THAT EMAIL HAS BEEN SUSPENDED";
+                    res.render(login, model);
+                }
+                else if(bcrypt.compareSync(password, user.password)) {
                     var loginUser = {
                         username: data[0].username,
                         email: data[0].email,
@@ -152,7 +156,7 @@ router.route("/login").post(
                 // if true log the user in and log session
                 // else tell them that that was the wrong password for that user
             } else {
-                model["error"] = "User could not be found with that email";
+                model["error"] = "User could not be found with that email or";
                 res.render("login", model);
             }
         })
