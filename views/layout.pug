@@ -9,15 +9,15 @@ html
         script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous")
 
     body
-        nav(class="navbar")
-            div(class="navLogo")
+        nav(class="navbar_custom")
+            div(class="navLogo_custom")
                 img(class="siteLogo" src="/images/trading.png")
                 div="Trading Cards"
-            div(class="navContainer")
+            div(class="navContainer_custom")
                 each link in header.nav
                     if link.selected
-                        span(class="navItem " + link.selected  href=link.route disabled)=link.name
+                        span(class="navItem_custom " + link.selected  href=link.route disabled)=link.name
                     else
-                        a(class="navItem " + link.selected  href=link.route disabled)=link.name
+                        a(class="navItem_custom " + link.selected  href=link.route disabled)=link.name
         div(class="bodyContent")
             block content
