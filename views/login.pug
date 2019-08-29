@@ -1,8 +1,10 @@
 extends layout.pug
 
 block content
+    if error
+        p(class="text-red")=error
     div
-        form(onsubmit="return login()" id="login")
+        form(action="/login" method="post")
             p="Email: "
             input(id="email" name="email" type="text")
             p="Password: "

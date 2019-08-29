@@ -48,7 +48,12 @@ function login() {
     var password = document.getElementById('password').value
 
     if(username != "" && password != "") {
-        // if valid data do ajax call on login post endpoint to log them in
+        // ajax call on /login
+        var json = {
+            username: username,
+            password: password
+        }
+        
     }
 
     document.getElementById('username').value = "";

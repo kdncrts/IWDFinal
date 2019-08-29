@@ -12,17 +12,16 @@ const pages = [
     {name: "Home",          route: "/",             reqPerm:"none"},
     {name: "Login",         route: "/login",        reqPerm:"none"},
     {name: "Register",      route: "/register",     reqPerm:"none"},
-    {name: "Admin",         route: "/admin/users",  reqPerm:"none"}
+    {name: "Admin",         route: "/admin/users",  reqPerm:"none"},
+    {name: "Logout",        route: "/logout",       reqPerm:"none"}
 ];
 
 
 module.exports = class ModelUtils {
-    buildHeader(route, user) {
+    buildHeader(route, user, role) {
         const nav = [];
         pages.forEach(page => {
-            if(this.canLoadPage(page, user)){
-                // check session for user if so don't show login/register show logout also account page
-                // if admin add admin page option
+            if(this.canLoadPage(page, role)){
                 nav.push({
                     name: page.name,
                     route: page.route,
@@ -37,7 +36,17 @@ module.exports = class ModelUtils {
     }
 
     canLoadPage (page, user) {
-        return true;
+        var canLoad = false;
+        if((page.route == "/login" || page.route == "/register") && user == "") {
+            canLoad = true;
+        }
+        else if(page.route == "/logout" && user != "") {
+            canLoad = true;
+        }
+        else if(page == "/admin/users" && user == "admin") {
+            canLoad = true;
+        }
+        return canLoad;
     }
 
 

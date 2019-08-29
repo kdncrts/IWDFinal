@@ -7,13 +7,21 @@ var router = express.Router();
 // These routes use the Promise Example I posted
 router.route("/users").get(
     function(req, res){
-        ModelUtils.read("users", {}, data => {
+        if(req.session.role == "admin") {
             const model = {
-                header: ModelUtils.buildHeader("/admin/users", null),
-                users: data
+                header: ModelUtils.buildHeader("/admin/users", req.session.user),
             };
+        ModelUtils.read("users", {}, data => {
+            model["users"] = data;
             res.render("admin", model);
         });
+        }
+        else {
+            const model = {
+                header: ModelUtils.buildHeader("/", req.session.user)
+            };
+            res.render("/", model)
+        }
     }
 );
 

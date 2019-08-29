@@ -6,7 +6,7 @@ block content
     if error
         p(class="text-red")=error
 
-    form(action="register" method="post")
+    form(action="/register" method="post")
         p   
             | Username
             br
@@ -18,7 +18,7 @@ block content
         p
             | Confirm Password
             br
-            input(type="password" name="password-confirm")
+            input(type="password" name="confirmPassword")
         p
             | Email
             br
@@ -29,20 +29,22 @@ block content
             input(type="number" name="age")
         p
             | Favorite Pizza Topping
+            input(checked type="radio" name="topping" value="none" style="visibility:hidden")
             each topping in toppings
                 br
-                input(type="radio" name="topping" value=topping)
+                input(type="radio" name="topping" value=topping.toLowerCase())
                 label(for=topping)
                     = topping 
         p
             | Favorite Color
+            input(checked type="radio" name="color" value="none" style="visibility:hidden")
             each color in colors
                 br
-                input(type="radio" name="color" value=color)
+                input(type="radio" name="color" value=color.toLowerCase())
                 label(for=color)
                     = color 
         p
             | Random Number from 0-100
             br
-            input(type="number" name="random" value=0)
+            input(type="number" name="random" value=-1)
         input(type="submit")
