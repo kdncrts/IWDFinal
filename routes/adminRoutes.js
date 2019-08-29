@@ -29,20 +29,21 @@ router.route("/user/activate/:email").get(
         const model = {
             header: ModelUtils.buildHeader(req),
         };
-        if(req.session.user != undefined && req.session.user.role == 'admin') {
+        if(req.session.user && req.session.user.role == 'admin') {
             ModelUtils.read("users", {email: req.params.email}, data => {
-                if(data && data.lenth) {
-                    data[0]["status"] = "active";
-                    ModelUtils.update("users", {email: req.params.email}, data[0], callback =>{
+                console.log(data);
+                if(data && data.length) {
+                    const user = data[0];
+                    user["status"] = "active";
+                    ModelUtils.update("users", {email: req.params.email}, user, () => {
                         ModelUtils.read("users", {}, data => {
                             model["users"] = data;
-                            res.redirect("/admin/users", model);
+                            res.redirect("/admin/users");
                         });
                     });
                 } 
                 else {
-                    model["error"] = "Something went wrong couldn't find specified user";
-                    res.render("admin", model);
+                    res.redirect("/admin/users");
                 }
             });
         } else {
@@ -56,11 +57,13 @@ router.route("/user/suspend/:email").get(
         const model = {
             header: ModelUtils.buildHeader(req),
         };
-        if(req.session.user != undefined && req.session.user.role == 'admin') {
+        if(req.session.user && req.session.user.role == 'admin') {
             ModelUtils.read("users", {email: req.params.email}, data => {
-                if(data && data.lenth) {
-                    data[0]["status"] = "suspended";
-                    ModelUtils.update("users", {email: req.params.email}, data[0], callback =>{
+                console.log(data);
+                if(data && data.length) {
+                    const user = data[0];
+                    user["status"] = "suspended";
+                    ModelUtils.update("users", {email: req.params.email}, user, () => {
                         ModelUtils.read("users", {}, data => {
                             model["users"] = data;
                             res.redirect("/admin/users");

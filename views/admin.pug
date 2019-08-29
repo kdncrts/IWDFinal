@@ -2,10 +2,24 @@ extends layout
 
 block content
     div
+        div(class="row m-2 p-2")
+            div(class="col")="Email"
+            div(class="col")="Role"
+            div(class="col")="Age"
+            div(class="col")="Topping"
+            div(class="col")="Color"
+            div(class="col")="Number"
+            div(class="col")="Status"
+        hr
         each user in users
-            p=user.email
-            p=user.staus
-            if user.status == "active"
-                a(href="/admin/user/suspend/" + user.email)="Suspend"
-            else
-                a(href="/admin/user/activate/" + user.email)="Activate"
+            div(class="row m-2 p-2")
+                div(class="col")=user.email
+                div(class="col")=user.role
+                div(class="col")=user.age
+                div(class="col")=user.toppings
+                div(class="col")=user.colors
+                div(class="col")=user.number
+                if user.status == "active"
+                    a(class="btn col btn-secondary btn-sm" href="/admin/user/suspend/" + user.email)="Suspend"
+                else
+                    a(class="btn col btn-danger btn-sm" href="/admin/user/activate/" + user.email)="Activate"
