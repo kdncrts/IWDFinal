@@ -61,7 +61,7 @@ router.route("/register").post(
             // check for existing email/user
             ModelUtils.read("users", filter, user => {
                 // if user already exits
-                if(user){
+                if(user && user.length){
                     model["error"] = "User already associcated with that email"
                     res.render("register", model);
                     return;
@@ -129,13 +129,15 @@ router.route("/login").post(
         }
         const {email, password} = req.body;
         ModelUtils.read("users", {email: email}, data => {
-            if(data[0]) {
-                if(bcrypt.compareSync(password, data[0].password)) {
+            if(data && data.length) {
+                const user = data[0];
+                if(bcrypt.compareSync(password, user.password)) {
                     var user = {
                         username: data[0].username,
                         email: data[0].email,
                         role: data[0].role
                     }
+                    console.log("password worked!");
                     req.session.user = user;
                     console.log("login session user: " + req.session.user);
                     console.log("session: " + req.session);

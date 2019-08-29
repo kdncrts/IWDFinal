@@ -1,14 +1,18 @@
 extends layout.pug
 
 block content
+    h2(class="center")="Register Page"
+    hr
     if error
         p(class="text-red")=error
-    div
-        form(action="/login" method="post")
-            p="Email: "
-            input(id="email" name="email" type="text")
-            p="Password: "
-            input(id="password" name="password" type="password")
-            br
-            input(type="submit")
-        a(href="/register")= "Register here"
+    form(action="login" method="post")
+        div(class="form-row")
+            div(class="form-group col-md-6")
+                label(for="username")="Username"
+                input(id="username" type="text" name="username" class="form-control")
+            div(class="form-group col-md-6")
+                label(for="password")="Password"
+                input(id="password" type="password" name="password" class="form-control")
+        div(class="form-group")
+            a(href="/register")="Don't have any account? Register here"
+        input(class="btn btn-secondary" type="submit")
