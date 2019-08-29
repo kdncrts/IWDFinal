@@ -45,12 +45,11 @@ const createCard = (card) => {
 
 function login() {
     var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
-    console.log(username);
-    console.log(password);
+    var password = document.getElementById('password').value
 
-    var filter = {"username": username};
-    var user = 
+    if(username != "" && password != "") {
+        // if valid data do ajax call on login post endpoint to log them in
+    }
 
     document.getElementById('username').value = "";
     document.getElementById('password').value = "";

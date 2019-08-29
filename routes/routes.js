@@ -32,12 +32,14 @@ router.route("/register").post(
 
         // check for existing email/user
         ModelUtils.read("users", {email: req.body.email}, user => {
+            // if user already exits
             if(user){
                 model["error"] = "User already associcated with that email"
                 res.render("register", model);
                 return;
             } else {
                 // if existing user doesn't exist, then add the new users
+                // format body and salt password
                 ModelUtils.create("users", req.body, response => {
 
                     // save user to session
@@ -54,6 +56,25 @@ router.route("/login").get(
             header: ModelUtils.buildHeader("/login", null)
         }
         res.render("login", model);
+    }
+)
+
+router.route("/login").post(
+    function(req, res) {
+        const model = {
+            header: ModelUtils.buildHeader("/login", null)
+        }
+        const {username, password} = req.body;
+        var user = ModelUtils.read("users", {username: username}, data => {
+            if(data) {
+                // check password against saved hash
+                // if true log the user in and log session
+                // else tell them that that was the wrong password for that user
+            } else {
+                model["error"] = "User could not be found with that username";
+                res.render("login", model);
+            }
+        })
     }
 )
 

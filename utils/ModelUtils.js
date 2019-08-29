@@ -20,6 +20,8 @@ module.exports = class ModelUtils {
         const nav = [];
         pages.forEach(page => {
             if(this.canLoadPage(page, user)){
+                // check session for user if so don't show login/register show logout also account page
+                // if admin add admin page option
                 nav.push({
                     name: page.name,
                     route: page.route,
