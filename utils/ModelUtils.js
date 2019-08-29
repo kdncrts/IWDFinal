@@ -37,7 +37,12 @@ module.exports = class ModelUtils {
 
     canLoadPage (page, user) {
         var canLoad = false;
-        if((page.route == "/login" || page.route == "/register") && !user) {
+        console.log(page);
+        console.log(user);
+        if(page.route == "/") {
+            canLoad = true;
+        }
+        else if((page.route == "/login" || page.route == "/register") && !user) {
             canLoad = true;
         }
         else if(page.route == "/logout" && user) {
